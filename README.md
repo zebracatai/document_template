@@ -15,6 +15,27 @@ python app.py
 
 ```
 
+or example from: ``` https://github.com/lucidrains/PaLM-rlhf-pytorch```
+```python
+import torch
+from palm_rlhf_pytorch import PaLM
+
+palm = PaLM(
+    num_tokens = 20000,
+    dim = 512,
+    depth = 12
+).cuda()
+
+seq = torch.randint(0, 20000, (1, 2048)).cuda()
+
+loss = palm(seq, return_loss = True)
+loss.backward()
+
+# after much training, you can now generate sequences
+
+generated = palm.generate(2048) # (1, 2048)
+```
+
 ## Prerequisites
 A list of any dependencies or requirements that must be installed before the project can be run. This could include things like Python packages, system libraries, or external tools.
 
@@ -46,6 +67,16 @@ python main.py
 ```
 ## Deployment
 Instructions on how to deploy the project on a live system. This should include information on any necessary configuration or setup steps, as well as any necessary instructions for the user.
+
+## Todo
+Example from this repo: ``` https://github.com/lucidrains/PaLM-rlhf-pytorch```
+- [x] clone base transformer with separate lora for critic
+- [x] also allow for non-LoRA based finetuning
+- [x] redo normalize to be able to have a masked version, not sure if anyone will ever use per token rewards / values, but good practice to implement
+
+- [ ] add Hugging Face accelerate and test out wandb instrumentation
+- [ ] search literature to figure out what is the latest SOTA for PPO, assuming RL field is still making progress.
+
 
 ## Contributing
 Guidelines for contributing to the project, including information on how to submit pull requests and any necessary coding standards or conventions.
